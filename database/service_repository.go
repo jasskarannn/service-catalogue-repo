@@ -1,6 +1,9 @@
 package database
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
 
 // ServiceRepository defines the interface for interacting with the service table in the database.
 type ServiceRepository interface {
@@ -19,12 +22,13 @@ func NewServiceRepository(db *sql.DB) ServiceRepository {
 
 // GetServices retrieves services from the database with pagination.
 func (r *serviceRepositoryImpl) GetServices(offset, limit int) ([]Service, error) {
-	query := "SELECT * FROM service LIMIT $1 OFFSET $2"
+	query := `SELECT * FROM public."service" OFFSET $1 LIMIT $2`
 	rows, err := r.db.Query(query, limit, offset)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
+	fmt.Println("<<< rows is ", rows)
 
 	var services []Service
 	for rows.Next() {

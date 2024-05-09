@@ -23,8 +23,11 @@ func main() {
 		log.Fatalf("Error initializing database: %s", err)
 	}
 
+	// Initialize the service repository
+	serviceRepo := database.NewServiceRepository(db)
+
 	// Initialize handlers
-	h := handlers.NewHandler(db)
+	h := handlers.NewHandler(db, serviceRepo)
 
 	// Initialize router
 	r := handlers.SetupRouter(h)
