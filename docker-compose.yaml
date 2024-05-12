@@ -1,26 +1,33 @@
 version: '3.7'
 
 services:
-  catalog_service:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  go_app:
+    build: .
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
+      - db
     environment:
-      - DATABASE_HOST=postgres
-      - DATABASE_PORT=5432
-      - DATABASE_USER=your_db_user
-      - DATABASE_PASSWORD=your_db_password
-      - DATABASE_NAME=your_db_name
-
-  postgres:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
+      DB_DRIVER: postgres
+      DB_USER: postgres
+      DB_NAME: catalogue_service
+      DB_HOST: db
+      DB_PASSWORD: postgres
+      DB_PORT: 5432
+    command: ["./scripts/wait-for-db.sh", "./service-catalogue"]
+  db:
+    image: postgres
     environment:
-      POSTGRES_USER: your_db_user
-      POSTGRES_PASSWORD: your_db_password
-      POSTGRES_DB: your_db_name
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: catalogue_service
+      POSTGRES_HOST: 5432
+  migrations:
+    image: ghcr.io/kukymbr/goose-docker:3.20.0
+    depends_on:
+      - db
+    environment:
+      - GOOSE_DRIVER=postgres
+      - GOOSE_DBSTRING=host=db port=5432 user=postgres password=postgres dbname=catalogue_service
+    volumes:
+      - ./database/migrations:/migrations

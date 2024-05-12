@@ -1,18 +1,29 @@
-# Dockerfile for Go application
-FROM golang:1.16-alpine as builder
+# Official Golang runtime as a base image
+FROM golang:1.22.2 AS builder
 
-WORKDIR /app
+# Set the working directory in the container
+WORKDIR /service-catalogue
 
-COPY . .
+# Copy the local package files to the container's workspace
+COPY go.mod go.sum ./
 
 RUN go mod download
 
-RUN go build -o service-catalogue ./cmd/main.go
+COPY . .
 
-FROM alpine:latest
+# Install PostgreSQL client tools
+RUN apt-get update && apt-get install -y postgresql-client
 
-WORKDIR /root/
+RUN go get -u github.com/pressly/goose/cmd/goose
+# RUN goose -dir database/migrations postgres "postgres://postgres:postgres@db:5432/catalogue_service?sslmode=disable" up
 
-COPY --from=builder /app/service-catalogue .
+ENV PATH=$PATH:/go/bin
 
+# Build the Go app
+RUN go build -o service-catalogue .
+
+# Expose port 8080 to the outside world
+EXPOSE 8080
+
+# Command to run the executable
 CMD ["./service-catalogue"]

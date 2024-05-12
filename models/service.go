@@ -1,12 +1,12 @@
 package models
 
-// Service struct to hold service data
+import "github.com/google/uuid"
+
+// Service represents a service in the catalogue.
 type Service struct {
-	ID          int     `json:"id"`
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Category    string  `json:"category"`
-	Price       float64 `json:"price"`
-	CreatedAt   string  `json:"created_at"`
-	UpdatedAt   string  `json:"updated_at"`
+	ServiceID    int       `json:"service_id" db:"service_id"`
+	Name         string    `json:"name" db:"name"`
+	Description  string    `json:"description" db:"description"`
+	VersionCount string    `json:"version_count" db:"version_count"`
+	CreatedAt    uuid.UUID `json:"created_at" db:"created_at"`
 }

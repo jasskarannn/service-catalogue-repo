@@ -1,8 +1,9 @@
 package config
 
 import (
-	"encoding/json"
-	"os"
+	"log"
+
+	"github.com/go-ini/ini"
 )
 
 // Config struct to hold configuration data
@@ -20,15 +21,10 @@ type Config struct {
 }
 
 // LoadConfig loads configuration from a JSON file
-func LoadConfig(filePath string) (Config, error) {
-	var cfg Config
-	file, err := os.Open(filePath)
+func LoadConfig(filePath string) *ini.File {
+	cfg, err := ini.Load(filePath)
 	if err != nil {
-		return cfg, err
+		log.Fatalf("failed to load configuration file: %v", err)
 	}
-	defer file.Close()
-
-	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&cfg)
-	return cfg, err
+	return cfg
 }
