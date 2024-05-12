@@ -23,3 +23,9 @@ go build -o service-catalogue main.go
 4. Search for a service based on input text with pagination.
 5. Retrieve all services with pagination.
 6. Retrieve a particular service.
+
+## Video Walkthrough of the service API Endpoints
+
+
+https://github.com/jasskarannn/service-catalogue-repo/assets/59541154/d5189640-cad2-48b0-9853-efcd5d8ba0c6
+
