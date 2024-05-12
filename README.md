@@ -15,3 +15,11 @@ go build -o service-catalogue main.go
 
 ## Run the service - 
 ./service-catalogue
+
+## API Endpoints of the service serve the following purposes -
+1. Check DB Health
+2. Add a new 'service' card
+3. Add a new 'version'
+4. Search for a service based on input text.
+5. Retrieve all services.
+6. Retrieve a particular service.
