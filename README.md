@@ -29,3 +29,7 @@ go build -o service-catalogue main.go
 
 https://github.com/jasskarannn/service-catalogue-repo/assets/59541154/d5189640-cad2-48b0-9853-efcd5d8ba0c6
 
+## Docker 
+docker-compose up --build --force-recreate
+![image](https://github.com/jasskarannn/service-catalogue-repo/assets/59541154/cb6a3d64-e119-461d-9fe0-5850baaa578f)
+
